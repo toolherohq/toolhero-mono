@@ -1,0 +1,46 @@
+{
+    "version": "0.2.0",
+    "license": "MIT",
+    "main": "src/index.ts",
+    "typings": "src/index.ts",
+    "files": [
+        "dist",
+        "src"
+    ],
+    "engines": {
+        "node": ">=10"
+    },
+    "scripts": {
+        "start": "tsdx watch",
+        "build": "tsdx build",
+        "test": "tsdx test",
+        "lint": "tsdx lint",
+        "prepare": "tsdx build",
+        "size": "size-limit",
+        "analyze": "size-limit --why"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "tsdx lint"
+        }
+    },
+    "prettier": {
+        "printWidth": 80,
+        "semi": true,
+        "singleQuote": true,
+        "trailingComma": "es5"
+    },
+    "name": "toolhero-shared",
+    "author": "Rahul T",
+    "module": "dist/toolhero-shared.esm.js",
+    "size-limit": [
+        {
+            "path": "dist/toolhero-shared.cjs.production.min.js",
+            "limit": "10 KB"
+        },
+        {
+            "path": "dist/toolhero-shared.esm.js",
+            "limit": "10 KB"
+        }
+    ]
+}

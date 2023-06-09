@@ -1,0 +1,50 @@
+{
+  "version": "0.4.0",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "typings": "src/index.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "toolhero-next",
+  "author": "Rahul T",
+  "module": "dist/toolhero-next.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/toolhero-next.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/toolhero-next.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "next": "^13.4.4",
+    "toolhero": "*"
+  }
+}
