@@ -20,6 +20,9 @@ export abstract class ValueObject<T extends ValueObjectProps> {
   }
 
   public abstract serialize(): any;
+  public type(): string {
+    return this.constructor.name
+  }
 
   public equals(vo?: ValueObject<T>): boolean {
     if (vo === null || vo === undefined) {
