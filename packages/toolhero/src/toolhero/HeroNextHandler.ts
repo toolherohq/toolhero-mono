@@ -1,21 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { HeroResponse } from './HeroResponse';
-import { HeroTool } from "toolhero"
-import { HtmlAppService } from '../main/services/HtmlAppService';
+import { HeroTool } from '../main/valueObjects/HeroTool';
+import { assets } from '../assets/assets';
 
 
 export type NextApiHandler = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 
 export class HeroNextManager {
   private tools: HeroTool[];
-  private htmlAppService: HtmlAppService;
   constructor() {
     this.tools = [];
-    this.htmlAppService = new HtmlAppService()
   }
   public add(tool: HeroTool): void {
     this.tools.push(tool);
-    this.htmlAppService = new HtmlAppService();
   }
   public nextApiHandler(_inputHandler?: NextApiHandler) {
     const HeroNextHandler = async (
@@ -33,8 +30,8 @@ export class HeroNextManager {
         });
       }
       
-      const html = await this.htmlAppService.buildHtmlPage("/tmp/assets")
       // if none of the routes match, return a 404 response
+      const html = Buffer.from(assets.html, "base64").toString()
       res.okHtml(html);
     };
     return HeroNextHandler
