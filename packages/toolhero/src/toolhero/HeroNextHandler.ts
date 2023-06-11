@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { HeroResponse } from './HeroResponse';
 import { HeroTool } from "toolhero"
-import { HtmlAppService } from 'toolhero-shared';
+import { HtmlAppService } from '../main/services/HtmlAppService';
+
 
 export type NextApiHandler = (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
 

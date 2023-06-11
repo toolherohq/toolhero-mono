@@ -1,4 +1,4 @@
-# toolhero
+# toolhero-next
 
 ## 0.4.0
 

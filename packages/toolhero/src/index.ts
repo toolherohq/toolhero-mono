@@ -1,3 +1,4 @@
-import { HeroTool  } from "./app/main/domain/valueObjects/HeroTool";
+import { HeroTool } from './main/valueObjects/HeroTool';
+import { HeroNextManager  } from './toolhero/HeroNextHandler';
 
-export  { HeroTool }
+export { HeroNextManager, HeroTool }

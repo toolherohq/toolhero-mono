@@ -1,4 +1,5 @@
-import { ValueObject } from "toolhero-shared";
+import { ValueObject } from "../../shared/domain/ValueObject";
+
 
 export interface IHeroToolProps {
     name: string;
