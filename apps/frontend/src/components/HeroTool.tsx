@@ -1,8 +1,9 @@
 
-import { IHeroToolSeralised } from "toolhero/src/main/valueObjects/HeroTool";
+import { IHeroToolSerialised } from "toolhero/src/main/valueObjects/HeroTool";
 import HeroText from "./HeroText";
+import axios from "axios"
 
-const HeroTool = (props: { tool: IHeroToolSeralised }) => {
+const HeroTool = (props: { tool: IHeroToolSerialised }) => {
     return (
         <>
             <div className="py-4 px-4 bg-gray-300 mb-4">
@@ -19,6 +20,12 @@ const HeroTool = (props: { tool: IHeroToolSeralised }) => {
                         return <div />
                     })
                 }
+            </div>
+            <div className="px-4 py-4">
+                <button className="btn btn-primary" onClick={async () => {
+                    console.log(props.tool)
+                    await axios.post(window.location.href, { tool: props.tool });
+                }}>Run</button>
             </div>
         </>
     );

@@ -1,12 +1,17 @@
 import './App.css'
 import Navigation from "./components/Navigation"
 import HeroTool from './components/HeroTool'
-import { IHeroToolSeralised } from 'toolhero/src/main/valueObjects/HeroTool';
+import { IHeroToolSerialised } from 'toolhero/src/main/valueObjects/HeroTool';
+import { HeroToolContext, HeroToolStateReducer } from './context/HeroToolContext';
+import React from 'react';
 declare global {
-  interface Window { TOOL: IHeroToolSeralised; }
+  interface Window { TOOL: IHeroToolSerialised; }
 }
 
 function App() {
+  const [heroToolState, heroToolDispatch] = React.useReducer(HeroToolStateReducer, {
+    tool: window.TOOL
+  });
 
   return (
     <>
@@ -15,7 +20,9 @@ function App() {
         <div className="mx-auto max-w-4xl">{/* Content goes here */}
           <Navigation></Navigation>
           <div className="overflow-hidden rounded-sm bg-gray-200 border-t-[16px] border-gray-600 my-4">
-            <HeroTool tool={window.TOOL} />
+            <HeroToolContext.Provider value={{ state: heroToolState, dispatch: heroToolDispatch }}>
+              <HeroTool tool={window.TOOL} />
+            </HeroToolContext.Provider>
           </div>
         </div>
       </div>

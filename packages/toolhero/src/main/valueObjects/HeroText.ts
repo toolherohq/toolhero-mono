@@ -5,17 +5,18 @@ export type IDefaultString = () => string | Promise<string>;
 
 export interface IHeroTextProps {
     name: string;
-    value: string | IDefaultString | null;
+    value: string | null;
+    default: IDefaultString | null;
 }
 
-export interface IHeroTextSerialized {
+export interface IHeroTextSerialised {
     name: string;
     value: string | null;
 }
 
 
 export class HeroText extends ValueObject<IHeroTextProps> {
-    public async serialize(): Promise<IHeroTextSerialized> {
+    public async serialize(): Promise<IHeroTextSerialised> {
         let value = null;
         if (this.props.value) {
             if (typeof this.props.value === "function") {
@@ -29,14 +30,35 @@ export class HeroText extends ValueObject<IHeroTextProps> {
             value
         }
     }
+    public static deserialise(serialised: IHeroTextSerialised): HeroText {
+        return new HeroText({
+            name: serialised.name,
+            value: serialised.value,
+            default: null
+        })
+    }
     public static New(name: string): HeroText {
         return new HeroText({
             name,
-            value: null
+            value: null,
+            default: null
         })
     }
     public default(value: string | IDefaultString) {
-        this.props.value = value
+        if (typeof value === "function") {
+            this.props.default = value
+        } else[
+            this.props.value = value
+        ]
         return this
+    }
+
+
+
+    get name(): string {
+        return this.props.name;
+    }
+    get value(): string {
+        return this.props.value as string
     }
 }

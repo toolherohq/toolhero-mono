@@ -1,9 +1,9 @@
 import { ValueObject } from "../../shared/domain/ValueObject";
-import { HeroText, IHeroTextSerialized } from "./HeroText";
+import { HeroText, IHeroTextSerialised as IHeroTextSerialised } from "./HeroText";
 
 
 type HeroInputMember = HeroText;
-type HeroInputMemberSerilized = IHeroTextSerialized
+type HeroInputMemberSerialised = IHeroTextSerialised
 export interface IHeroInputProps {
     members: {
         type: string;
@@ -14,7 +14,7 @@ export interface IHeroInputProps {
 export interface IHeroInputSerialized {
     members: {
         type: string;
-        member: HeroInputMemberSerilized
+        member: HeroInputMemberSerialised
     }[];
 }
 
@@ -24,7 +24,7 @@ export class HeroInput extends ValueObject<IHeroInputProps> {
     public async serialize(): Promise<IHeroInputSerialized> {
         const members: {
             type: string;
-            member: HeroInputMemberSerilized
+            member: HeroInputMemberSerialised
         }[] = [];
         for (const member of this.props.members) {
             members.push({
@@ -33,6 +33,25 @@ export class HeroInput extends ValueObject<IHeroInputProps> {
             });
         }
         return { members }
+    }
+
+    public static deserialise(props: IHeroInputSerialized): HeroInput {
+        const heroInputProps: IHeroInputProps = {
+            members: []
+        }
+        for (const serialisedMember of props.members) {
+            let heroInputMember: HeroInputMember | null = null;
+            if (serialisedMember.type === "HeroText") {
+                heroInputMember = HeroText.deserialise(serialisedMember.member);
+            }
+            if (heroInputMember) {
+                heroInputProps.members.push({
+                    type: serialisedMember.type,
+                    member: heroInputMember
+                });
+            }
+        }
+        return new HeroInput(heroInputProps);
     }
     public static New(): HeroInput {
         return new HeroInput({
@@ -45,6 +64,13 @@ export class HeroInput extends ValueObject<IHeroInputProps> {
             type: input.type(),
             member: input
         });
+    }
+
+    public valueOf(name: string): string | undefined | null {
+        const member = this.props.members.find((member) => {
+            return member.member.name === name
+        });
+        return member?.member.value
     }
 
 }

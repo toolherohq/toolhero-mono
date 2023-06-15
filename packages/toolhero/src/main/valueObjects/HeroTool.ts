@@ -1,19 +1,19 @@
 import { ValueObject } from "../../shared/domain/ValueObject";
 import { HeroInput, IHeroInputSerialized } from "./HeroInput";
 
-export type IOnHeroToolSubmit = () => void;
+export type IOnHeroToolRun = (payload: HeroInput) => Promise<void>;
 export interface IHeroToolProps {
     name: string;
     input: HeroInput;
-    onSubmit: IOnHeroToolSubmit;
+    onSubmit: IOnHeroToolRun;
 }
-export interface IHeroToolSeralised {
+export interface IHeroToolSerialised {
     name: string;
     input: IHeroInputSerialized
 }
 
 export class HeroTool extends ValueObject<IHeroToolProps> {
-    public async serialize(): Promise<IHeroToolSeralised> {
+    public async serialize(): Promise<IHeroToolSerialised> {
         return {
             name: this.props.name,
             input: await this.props.input.serialize()
@@ -23,7 +23,7 @@ export class HeroTool extends ValueObject<IHeroToolProps> {
         return new HeroTool({
             name,
             input: HeroInput.New(),
-            onSubmit: () => { }
+            onSubmit: async (payload: HeroInput) => { }
         })
     }
 
@@ -31,9 +31,13 @@ export class HeroTool extends ValueObject<IHeroToolProps> {
         return this.props.input;
     }
 
-    onSubmit(onHeroToolSubmit: IOnHeroToolSubmit) {
-        this.props.onSubmit = onHeroToolSubmit;
+    run(onRun: IOnHeroToolRun) {
+        this.props.onSubmit = onRun;
         return this
+    }
+
+    get onSubmit(): IOnHeroToolRun {
+        return this.props.onSubmit
     }
 
 }
