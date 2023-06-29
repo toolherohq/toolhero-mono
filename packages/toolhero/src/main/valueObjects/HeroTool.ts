@@ -1,7 +1,8 @@
 import { ValueObject } from "../../shared/domain/ValueObject";
 import { HeroInput, IHeroInputSerialized } from "./HeroInput";
+import { HeroOutput } from "./HeroOutput";
 
-export type IOnHeroToolRun = (payload: HeroInput) => Promise<void>;
+export type IOnHeroToolRun = (payload: HeroInput) => Promise<HeroOutput>;
 export interface IHeroToolProps {
     name: string;
     input: HeroInput;
@@ -23,7 +24,9 @@ export class HeroTool extends ValueObject<IHeroToolProps> {
         return new HeroTool({
             name,
             input: HeroInput.New(),
-            onSubmit: async (payload: HeroInput) => { }
+            onSubmit: async (payload: HeroInput) => {
+                return HeroOutput.New()
+            }
         })
     }
 

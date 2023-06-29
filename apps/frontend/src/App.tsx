@@ -10,7 +10,9 @@ declare global {
 
 function App() {
   const [heroToolState, heroToolDispatch] = React.useReducer(HeroToolStateReducer, {
-    tool: window.TOOL
+    tool: window.TOOL,
+    output: null,
+    toolRunStatus: "IDLE"
   });
 
   return (
@@ -21,7 +23,7 @@ function App() {
           <Navigation></Navigation>
           <div className="overflow-hidden rounded-sm bg-gray-200 border-t-[16px] border-gray-600 my-4">
             <HeroToolContext.Provider value={{ state: heroToolState, dispatch: heroToolDispatch }}>
-              <HeroTool tool={window.TOOL} />
+              <HeroTool />
             </HeroToolContext.Provider>
           </div>
         </div>

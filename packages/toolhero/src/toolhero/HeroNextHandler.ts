@@ -43,8 +43,7 @@ export class HeroNextManager {
     // const req = new HeroRequest(nextRequest);
     const res = new HeroResponse(nextResponse);
     const tool = this.tools[0];
-    const heroInput = HeroInput.deserialise(request.body.tool.input)
-    const response = await tool.onSubmit(heroInput);
+    const heroInput = HeroInput.deserialise(request.body.tool.input);
     if (!request.query.tool) {
       return res.error({
         code: 'TOOL_NOT_PROVIDED',
@@ -53,7 +52,12 @@ export class HeroNextManager {
       });
     }
 
-    res.json(request.body)
+    const response = await tool.onSubmit(heroInput);
+    const json = {
+      output: response.serialize()
+    }
+    console.log(json);
+    res.json(json)
   }
   public nextApiHandler(_inputHandler?: NextApiHandler) {
     const HeroNextHandler = async (

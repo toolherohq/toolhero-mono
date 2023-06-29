@@ -1,9 +1,9 @@
-import { ErrorObject } from "serialize-error";
+
 
 export interface ResultError {
   code: string;
   message: string;
-  error?: ErrorObject;
+  error?: any;
 }
 export class Result<T> {
   public isSuccess: boolean;
