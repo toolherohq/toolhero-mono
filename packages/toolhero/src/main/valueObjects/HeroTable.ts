@@ -8,17 +8,19 @@ export interface IHeroTableProps {
 }
 
 export interface IHeroTableSerialised {
+    path: string;
     header: IHeroTableHeaderSerialised;
     rows: IHeroTableRowSerialised[];
 }
 
 
 export class HeroTable extends ValueObject<IHeroTableProps> {
-    public serialize(): IHeroTableSerialised {
+    public serialise(parentPath: string): IHeroTableSerialised {
+        const path = `${parentPath}-HeroTable`;
         return {
-            header: this.props.header.serialize(),
-            rows: this.props.rows.map(r => r.serialize())
-
+            path,
+            header: this.props.header.serialise(),
+            rows: this.props.rows.map((r, index) => r.serialise(`${path}-index-${index}`))
         }
     }
     public static deserialise(serialised: IHeroTableSerialised): HeroTable {

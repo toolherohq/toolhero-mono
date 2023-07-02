@@ -1,17 +1,15 @@
 import { ValueObject } from "../../shared/domain/ValueObject";
-import { EnumHeroDataType } from "./EnumHeroDataType";
 import { HeroButton, IHeroButtonSerialised } from "./HeroButton";
 
 interface IHeroTableRowItem {
-    headerId: string;
     type: string;
-    value: string | number | HeroButton | null;
+    value: string | number | HeroButton;
 }
 
 interface IHeroTableRowItemSerialised {
-    headerId: string;
+    path: string;
     type: string;
-    value: string | number | IHeroButtonSerialised | null;
+    value: string | number | IHeroButtonSerialised;
 }
 
 export interface IHeroTableRowProps {
@@ -19,27 +17,33 @@ export interface IHeroTableRowProps {
 }
 
 export interface IHeroTableRowSerialised {
+    path: string;
     items: IHeroTableRowItemSerialised[];
 }
 
 
 export class HeroTableRow extends ValueObject<IHeroTableRowProps> {
-    public serialize(): IHeroTableRowSerialised {
+    public serialise(parentPath: string): IHeroTableRowSerialised {
+        const path = `${parentPath}-HeroTableRow`;
         const serialised: IHeroTableRowSerialised = {
+            path,
             items: []
         }
+        let index = 0;
         for (const item of this.props.items) {
+            const indexPath = `${path}-index-${index}`;
             let value: string | number | IHeroButtonSerialised | null = null;
             if (item.type === "HeroButton") {
-                value = (item.value as HeroButton).serialize()
+                value = (item.value as HeroButton).serialise(indexPath)
             } else {
                 value = item.value?.toString() as string
             }
             serialised.items.push({
-                headerId: item.headerId,
+                path: indexPath,
                 type: item.type,
                 value
-            })
+            });
+            index += 1;
         }
         return serialised;
     }
@@ -54,11 +58,10 @@ export class HeroTableRow extends ValueObject<IHeroTableRowProps> {
         })
     }
 
-    public add(item: { headerId: string; value: string | number | HeroButton | null }) {
+    public add(value: string | number | HeroButton) {
         this.props.items.push({
-            headerId: item.headerId,
-            value: item.value,
-            type: item.value?.constructor.name as string
+            value,
+            type: value?.constructor.name as string
         })
     }
 

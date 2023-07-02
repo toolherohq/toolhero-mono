@@ -10,13 +10,15 @@ export interface IHeroTextProps {
 }
 
 export interface IHeroTextSerialised {
+    path: string;
     name: string;
     value: string | null;
 }
 
 
 export class HeroText extends ValueObject<IHeroTextProps> {
-    public async serialize(): Promise<IHeroTextSerialised> {
+    public async serialise(parentPath: string): Promise<IHeroTextSerialised> {
+        const path = `${parentPath}-HeroText`;
         let value = null;
         if (this.props.value) {
             if (typeof this.props.value === "function") {
@@ -26,6 +28,7 @@ export class HeroText extends ValueObject<IHeroTextProps> {
             }
         }
         return {
+            path,
             name: this.props.name,
             value
         }

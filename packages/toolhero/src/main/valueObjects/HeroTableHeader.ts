@@ -1,8 +1,5 @@
 import { ValueObject } from "../../shared/domain/ValueObject";
-interface IHeroTableHeaderItem {
-    id: string;
-    value: string;
-}
+type IHeroTableHeaderItem = string
 
 export interface IHeroTableHeaderProps {
     items: IHeroTableHeaderItem[];
@@ -14,7 +11,7 @@ export interface IHeroTableHeaderSerialised {
 
 
 export class HeroTableHeader extends ValueObject<IHeroTableHeaderProps> {
-    public serialize(): IHeroTableHeaderSerialised {
+    public serialise(): IHeroTableHeaderSerialised {
         return this.props
     }
     public static deserialise(serialised: IHeroTableHeaderSerialised): HeroTableHeader {

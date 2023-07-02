@@ -12,6 +12,7 @@ export interface IHeroInputProps {
 }
 
 export interface IHeroInputSerialized {
+    path: string;
     members: {
         type: string;
         member: HeroInputMemberSerialised
@@ -21,18 +22,22 @@ export interface IHeroInputSerialized {
 
 
 export class HeroInput extends ValueObject<IHeroInputProps> {
-    public async serialize(): Promise<IHeroInputSerialized> {
+    public async serialise(parentPath: string): Promise<IHeroInputSerialized> {
+        const path = `${parentPath}-HeroInput`;
         const members: {
             type: string;
             member: HeroInputMemberSerialised
         }[] = [];
+        let index = 0;
         for (const member of this.props.members) {
+            const indexPath = `${path}-index-${index}`
             members.push({
                 type: member.type,
-                member: await member.member.serialize()
+                member: await member.member.serialise(indexPath)
             });
+            index += 1;
         }
-        return { members }
+        return { path, members }
     }
 
     public static deserialise(props: IHeroInputSerialized): HeroInput {

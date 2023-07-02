@@ -1,6 +1,5 @@
 import { ValueObject } from "../../shared/domain/ValueObject";
 
-export type IOnHeroButtonClick = () => Promise<void>;
 export enum EnumHeroButtonType {
     PRIMARY = "PRIMARY",
     SECONDARY = "SECONDARY",
@@ -10,56 +9,50 @@ export enum EnumHeroButtonType {
 }
 
 export interface IHeroButtonProps {
-    id: string;
     type: EnumHeroButtonType;
-    cta: string;
+    name: string;
     meta: Record<string, any>;
-    onClick?: IOnHeroButtonClick;
+    onClick: string | null;
 }
 
 export interface IHeroButtonSerialised {
-    id: string;
+    path: string;
     type: EnumHeroButtonType;
-    cta: string;
+    name: string;
     meta: Record<string, any>;
+    onClick: string | null
 }
 
 
 export class HeroButton extends ValueObject<IHeroButtonProps> {
-    public serialize(): IHeroButtonSerialised {
+    public serialise(path: string): IHeroButtonSerialised {
         return {
-            id: this.props.id,
+            path: `${path}-button`,
             type: this.props.type,
-            cta: this.props.cta,
-            meta: this.props.meta
+            name: this.props.name,
+            meta: this.props.meta,
+            onClick: this.props.onClick
         }
     }
     public static deserialise(serialised: IHeroButtonSerialised): HeroButton {
         return new HeroButton({
-            id: serialised.id,
             type: serialised.type,
-            cta: serialised.cta,
-            meta: serialised.meta
+            name: serialised.name,
+            meta: serialised.meta,
+            onClick: serialised.onClick,
         })
     }
-    public static New(id: string): HeroButton {
+    public static New(name: string): HeroButton {
         return new HeroButton({
-            id: id,
             type: EnumHeroButtonType.PRIMARY,
-            cta: id,
-            meta: {}
+            name: name,
+            meta: {},
+            onClick: null
         })
     }
 
-    public onClick(onHeroButtonClick: IOnHeroButtonClick): HeroButton {
+    public onClick(onHeroButtonClick: string): HeroButton {
         this.props.onClick = onHeroButtonClick;
         return this;
     }
-
-    public cta(cta: string) {
-        this.props.cta = cta;
-        return this;
-    }
-
-
 }

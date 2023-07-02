@@ -16,7 +16,7 @@ const HeroTable = ({ table }: IHeroTableProps) => {
                     <tr>
                         {
                             table.header.items.map((header) => {
-                                return <th id={header.id}>{header.value}</th>
+                                return <th id={header}>{header}</th>
                             })
                         }
                     </tr>

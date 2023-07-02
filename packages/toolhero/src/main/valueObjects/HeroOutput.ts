@@ -21,7 +21,7 @@ export interface IHeroOutputSerialized {
 
 
 export class HeroOutput extends ValueObject<IHeroOutputProps> {
-    public serialize(): IHeroOutputSerialized {
+    public serialise(): IHeroOutputSerialized {
         const members: {
             type: string;
             member: HeroOutputMemberSerialised
@@ -29,7 +29,7 @@ export class HeroOutput extends ValueObject<IHeroOutputProps> {
         for (const member of this.props.members) {
             members.push({
                 type: member.type,
-                member: member.member.serialize()
+                member: member.member.serialise()
             });
         }
         return { members }

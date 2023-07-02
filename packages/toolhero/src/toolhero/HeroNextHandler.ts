@@ -52,9 +52,9 @@ export class HeroNextManager {
       });
     }
 
-    const response = await tool.onSubmit(heroInput);
+    const response = await tool.onSubmit(heroInput, {});
     const json = {
-      output: response.serialize()
+      output: response.serialise()
     }
     console.log(json);
     res.json(json)
