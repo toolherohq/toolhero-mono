@@ -1,4 +1,5 @@
 import { NextApiResponse } from 'next';
+import path from "path";
 /**
  * Minimal wrapper around NextResponse
  */
@@ -53,5 +54,17 @@ export class HeroResponse {
     this.status(200);
     this.setHeader('Content-Type', 'text/html;charset=utf-8')
     this.send(html);
+  }
+
+  internalRedirect(destination: string) {
+    const proto =
+      this.nextResponse.req.headers["x-forwarded-proto"]
+        ? "https"
+        : "http";
+    const baseUrl = `${proto}://${this.nextResponse.req.headers.host}`;
+    const url = new URL(`${baseUrl}${this.nextResponse.req.url || ""}`)
+    const redirectUrl = `${url.pathname}?r=${destination}`;
+    this.status(302);
+    this.nextResponse.redirect(redirectUrl);
   }
 }

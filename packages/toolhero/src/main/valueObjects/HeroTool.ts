@@ -1,6 +1,6 @@
 import { ValueObject } from "../../shared/domain/ValueObject";
 import { HeroExecutionContext } from "./HeroExecutionContext";
-import { HeroFunction, HeroFunctions } from "./HeroFunctions";
+import { HeroFunctions } from "./HeroFunctions";
 import { HeroInput, IHeroInputSerialized } from "./HeroInput";
 import { HeroOutput } from "./HeroOutput";
 

@@ -29,7 +29,7 @@ export class HeroOutput extends ValueObject<IHeroOutputProps> {
         for (const member of this.props.members) {
             members.push({
                 type: member.type,
-                member: member.member.serialise()
+                member: member.member.serialise("tmp")
             });
         }
         return { members }

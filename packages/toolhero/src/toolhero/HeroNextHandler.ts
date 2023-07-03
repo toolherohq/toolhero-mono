@@ -1,8 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ToolRenderService } from '../main/services/ToolRenderService';
 import { HeroTool } from '../main/valueObjects/HeroTool';
+import { HeroRequest } from './HeroRequest';
 import { HeroResponse } from './HeroResponse';
-import { HeroInput } from '../main/valueObjects/HeroInput';
+import { Router } from './routes/Router';
+import { ErrorCodes } from '../shared/domain/ErrorCodes';
+import RouteParser from "route-parser"
+import { rootRouter } from '../main/infra/http/rootRouter';
 
 
 
@@ -16,12 +19,13 @@ export class HeroNextManager {
   public add(tool: HeroTool): void {
     this.tools.push(tool);
   }
+  /*
   private async handleGet(request: NextApiRequest,
     nextResponse: NextApiResponse): Promise<void> {
 
     // build request and response objects for routing
     // const req = new HeroRequest(nextRequest);
-    const res = new HeroResponse(nextResponse);
+    const res = new HeroNextHttpResponse(nextResponse);
     if (!request.query.tool) {
       return res.error({
         code: 'TOOL_NOT_PROVIDED',
@@ -41,7 +45,7 @@ export class HeroNextManager {
 
     // build request and response objects for routing
     // const req = new HeroRequest(nextRequest);
-    const res = new HeroResponse(nextResponse);
+    const res = new HeroNextHttpResponse(nextResponse);
     const tool = this.tools[0];
     const heroInput = HeroInput.deserialise(request.body.tool.input);
     if (!request.query.tool) {
@@ -58,26 +62,74 @@ export class HeroNextManager {
     }
     console.log(json);
     res.json(json)
-  }
+  }*/
   public nextApiHandler(_inputHandler?: NextApiHandler) {
-    const HeroNextHandler = async (
-      request: NextApiRequest,
-      response: NextApiResponse
-    ) => {
-      const res = new HeroResponse(response);
-      if (request.method === "GET") {
-        return this.handleGet(request, response);
-      }
-      return this.handlePost(request, response)
+    async function Handler(
+      vercelRequest: NextApiRequest,
+      vercelResponse: NextApiResponse
+    ) {
 
-      return res.error({
-        code: 'METHOD_NOT_SUPPORTED',
-        message: 'METHOD_NOT_SUPPORTED',
+      // build request and response objects for routing
+      const req = new HeroRequest(vercelRequest);
+      const res = new HeroResponse(vercelResponse);
+
+      // initialize router
+      const router = new Router();
+
+      // mount root  and use root routes
+      router.use("/", rootRouter);
+      const routes = router.routes();
+
+      // clean incoming url and ready it for processing
+      let effectiveUrl = (req.query['route'] as string || "")
+        .replace(/\/\/+/g, "/")
+        .replace(/\/$/, "");
+      if (effectiveUrl === "") {
+        effectiveUrl = "/"
+      }
+
+      // iterate over list of mounted routes
+      for (const route of routes) {
+        // get the cleaned path for the route
+        let effectivePath = route.path.replace(/\/\/+/g, "/").replace(/\/$/, "");
+        if (effectivePath === "") {
+          effectivePath = "/";
+        }
+        // load parser
+        const routeParser = new RouteParser(effectivePath);
+        const params = routeParser.match(effectiveUrl);
+
+        // execute route handler
+        if (params !== false && req.method === route.method) {
+          req.params = params;
+          try {
+            const middlewares = route.middlewares;
+            for (const middleware of middlewares) {
+              await middleware(req, res);
+              if (res.terminated === true) {
+                return;
+              }
+            }
+            await route.handler(req, res);
+            return;
+          } catch (err) {
+            console.error(err);
+            return res.error({
+              code: ErrorCodes.INTERNAL_SERVER_ERROR,
+              status: 500,
+              message: "Something went wrong",
+            });
+          }
+        }
+      }
+      // if none of the routes match, return a 404 response
+      res.error({
+        code: ErrorCodes.ROUTE_NOT_FOUND,
+        message: "Could not find this route",
         status: 404,
       });
-
-    };
-    return HeroNextHandler
+    }
+    return Handler
   }
 }
 
