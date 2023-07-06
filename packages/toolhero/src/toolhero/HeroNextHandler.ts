@@ -19,6 +19,10 @@ export class HeroNextManager {
   public add(tool: HeroTool): void {
     this.tools.push(tool);
   }
+
+  public getTools(): HeroTool[] {
+    return this.tools;
+  }
   /*
   private async handleGet(request: NextApiRequest,
     nextResponse: NextApiResponse): Promise<void> {
@@ -64,10 +68,12 @@ export class HeroNextManager {
     res.json(json)
   }*/
   public nextApiHandler(_inputHandler?: NextApiHandler) {
+    const self = this;
     async function Handler(
       vercelRequest: NextApiRequest,
       vercelResponse: NextApiResponse
     ) {
+
 
       // build request and response objects for routing
       const req = new HeroRequest(vercelRequest);
@@ -81,12 +87,15 @@ export class HeroNextManager {
       const routes = router.routes();
 
       // clean incoming url and ready it for processing
-      let effectiveUrl = (req.query['route'] as string || "")
+      let effectiveUrl = (req.query['r'] as string || "")
         .replace(/\/\/+/g, "/")
         .replace(/\/$/, "");
       if (effectiveUrl === "") {
         effectiveUrl = "/"
       }
+
+      console.log({ effectiveUrl });
+
 
       // iterate over list of mounted routes
       for (const route of routes) {
@@ -95,6 +104,7 @@ export class HeroNextManager {
         if (effectivePath === "") {
           effectivePath = "/";
         }
+
         // load parser
         const routeParser = new RouteParser(effectivePath);
         const params = routeParser.match(effectiveUrl);
@@ -105,12 +115,12 @@ export class HeroNextManager {
           try {
             const middlewares = route.middlewares;
             for (const middleware of middlewares) {
-              await middleware(req, res);
+              await middleware(req, res, { manager: self });
               if (res.terminated === true) {
                 return;
               }
             }
-            await route.handler(req, res);
+            await route.handler(req, res, { manager: self });
             return;
           } catch (err) {
             console.error(err);

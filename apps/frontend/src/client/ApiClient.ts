@@ -9,12 +9,23 @@ export interface IApiClient {
 
 export class ApiClient implements IApiClient {
     private baseUrl: string;
+    private buildUrl(path: string): string {
+        const url = new URL(this.baseUrl);
+        url.search = new URLSearchParams({ r: path }).toString();
+        return url.toString();
+    }
     constructor() {
-        this.baseUrl = window.location.href
+        const url = new URL(window.location.href);
+        url.hash = '';
+        url.search = '';
+        this.baseUrl = url.toString();
     }
     async runTool(tool: IHeroToolSerialised): Promise<Result<IHeroOutputSerialized>> {
         try {
-            const response = await axios.post<{ output: IHeroOutputSerialized }>(this.baseUrl, { tool });
+            const url = this.buildUrl(`/api/v1/tool/${tool.name}/run`);
+            console.log(url)
+            debugger;
+            const response = await axios.post<{ output: IHeroOutputSerialized }>(url, { tool });
             const { output } = response.data;
             return Result.ok(output)
         } catch (err) {
