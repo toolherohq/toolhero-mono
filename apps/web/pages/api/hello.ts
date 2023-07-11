@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { HeroTool, HeroNextManager, HeroText } from "toolhero";
 import { HeroButton } from "toolhero/src/main/valueObjects/HeroButton";
+import { HeroLink } from "toolhero/src/main/valueObjects/HeroLink";
 import { HeroOutput } from "toolhero/src/main/valueObjects/HeroOutput";
 import { HeroTable } from "toolhero/src/main/valueObjects/HeroTable";
 import { HeroTableRow } from "toolhero/src/main/valueObjects/HeroTableRow";
@@ -23,7 +24,7 @@ tool.run(async (payload, context) => {
     const row = HeroTableRow.New();
     row.add("PM hails Guinness World Record for ‘largest display of Lambani items’ with a total of 1755 items during 3rd G20 Culture Working Group Meeting in Hampi, Karnataka")
     row.add(HeroButton.New("Hello world!").onClick("onApprove").addMetaData("hello", "world"));
-
+    row.add(HeroLink.New("Link to article").to("https://google.com"));
 
 
     table.rows.push(row)

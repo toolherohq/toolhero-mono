@@ -1,9 +1,11 @@
 import { ValueObject } from "../../shared/domain/ValueObject";
+import { HeroButton, IHeroButtonSerialised } from "./HeroButton";
+import { HeroLink, IHeroLinkSerialised } from "./HeroLink";
 import { HeroTable, IHeroTableSerialised } from "./HeroTable";
 
 
-type HeroOutputMember = HeroTable;
-type HeroOutputMemberSerialised = IHeroTableSerialised
+type HeroOutputMember = HeroTable | HeroButton | HeroLink;
+type HeroOutputMemberSerialised = IHeroTableSerialised | IHeroButtonSerialised | IHeroLinkSerialised;
 export interface IHeroOutputProps {
     members: {
         type: string;

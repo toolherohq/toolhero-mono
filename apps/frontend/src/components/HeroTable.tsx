@@ -1,6 +1,8 @@
 import { IHeroButtonSerialised } from 'toolhero/src/main/valueObjects/HeroButton';
 import { IHeroTableSerialised } from 'toolhero/src/main/valueObjects/HeroTable';
 import HeroButton from './HeroButton';
+import HeroLink from './HeroLink';
+import { IHeroLinkSerialised } from 'toolhero/src/main/valueObjects/HeroLink';
 
 interface IHeroTableProps {
     table: IHeroTableSerialised
@@ -27,6 +29,7 @@ const HeroTable = ({ table }: IHeroTableProps) => {
                                     row.items.map((cell) => {
                                         return <td className="whitespace-normal">
                                             {cell.type === "HeroButton" && <HeroButton button={cell.value as IHeroButtonSerialised} />}
+                                            {cell.type === "HeroLink" && <HeroLink link={cell.value as IHeroLinkSerialised} />}
                                             {cell.type === "String" && <p>{cell.value as String}</p>}
                                             {cell.type === "Number" && <p>{cell.value?.toString()}</p>}
                                         </td>
