@@ -1,5 +1,5 @@
 {
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -43,10 +43,12 @@
     }
   ],
   "devDependencies": {
+    "@types/lodash.clonedeep": "^4.5.7",
     "@types/route-parser": "^0.1.4",
     "next": "^13.4.4"
   },
   "dependencies": {
+    "lodash.clonedeep": "^4.5.0",
     "route-parser": "^0.0.5"
   }
 }
