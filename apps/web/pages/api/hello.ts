@@ -21,8 +21,11 @@ tool.run(async (payload, context) => {
     table.header.push("Title");
     table.header.push("Action");
     const row = HeroTableRow.New();
-    row.add("This is a title")
+    row.add("PM hails Guinness World Record for ‘largest display of Lambani items’ with a total of 1755 items during 3rd G20 Culture Working Group Meeting in Hampi, Karnataka")
     row.add(HeroButton.New("Hello world!").onClick("onApprove").addMetaData("hello", "world"));
+
+
+
     table.rows.push(row)
     output.add(table);
 
