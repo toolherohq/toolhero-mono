@@ -12,7 +12,7 @@ export interface IHeroButtonProps {
     type: EnumHeroButtonType;
     name: string;
     meta: Record<string, any>;
-    onClick: string | null;
+    onClickHandler: string | null;
 }
 
 export interface IHeroButtonSerialised {
@@ -20,7 +20,7 @@ export interface IHeroButtonSerialised {
     type: EnumHeroButtonType;
     name: string;
     meta: Record<string, any>;
-    onClick: string | null
+    onClickHandler: string | null
 }
 
 
@@ -31,7 +31,7 @@ export class HeroButton extends ValueObject<IHeroButtonProps> {
             type: this.props.type,
             name: this.props.name,
             meta: this.props.meta,
-            onClick: this.props.onClick
+            onClickHandler: this.props.onClickHandler
         }
     }
     public static deserialise(serialised: IHeroButtonSerialised): HeroButton {
@@ -39,7 +39,7 @@ export class HeroButton extends ValueObject<IHeroButtonProps> {
             type: serialised.type,
             name: serialised.name,
             meta: serialised.meta,
-            onClick: serialised.onClick,
+            onClickHandler: serialised.onClickHandler,
         })
     }
     public static New(name: string): HeroButton {
@@ -47,16 +47,20 @@ export class HeroButton extends ValueObject<IHeroButtonProps> {
             type: EnumHeroButtonType.PRIMARY,
             name: name,
             meta: {},
-            onClick: null
+            onClickHandler: null
         })
     }
 
     public onClick(onHeroButtonClick: string): HeroButton {
-        this.props.onClick = onHeroButtonClick;
+        this.props.onClickHandler = onHeroButtonClick;
         return this;
     }
     public addMetaData(key: string, value: string): HeroButton {
         this.props.meta[key] = value;
         return this;
+    }
+
+    get onClickHandler(): string | null {
+        return this.props.onClickHandler
     }
 }

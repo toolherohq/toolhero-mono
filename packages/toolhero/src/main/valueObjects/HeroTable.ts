@@ -19,7 +19,7 @@ export class HeroTable extends ValueObject<IHeroTableProps> {
         return {
             path,
             header: this.props.header.serialise(`${path}-header`),
-            rows: this.props.rows.map((r, index) => r.serialise(`${path}-rows`))
+            rows: this.props.rows.map((r, index) => r.serialise(`${path}-rows-${index}`))
         }
     }
     public static deserialise(serialised: IHeroTableSerialised): HeroTable {

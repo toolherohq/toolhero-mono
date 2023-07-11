@@ -1,8 +1,8 @@
-import { HeroButton } from "./HeroButton";
+import { IHeroButtonSerialised } from "./HeroButton";
 
 export interface HeroUIEvent {
     source: {
-        button?: HeroButton
+        button?: IHeroButtonSerialised
     }
 }
 export interface HeroExecutionContext {

@@ -1,8 +1,6 @@
-import React from 'react';
+import { IHeroButtonSerialised } from 'toolhero/src/main/valueObjects/HeroButton';
 import { IHeroTableSerialised } from 'toolhero/src/main/valueObjects/HeroTable';
-import { IHeroTableHeaderSerialised } from 'toolhero/src/main/valueObjects/HeroTableHeader';
 import HeroButton from './HeroButton';
-import { IHeroButtonProps, IHeroButtonSerialised } from 'toolhero/src/main/valueObjects/HeroButton';
 
 interface IHeroTableProps {
     table: IHeroTableSerialised

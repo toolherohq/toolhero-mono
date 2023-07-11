@@ -30,7 +30,7 @@ export class HeroOutput extends ValueObject<IHeroOutputProps> {
         this.props.members.map((member, index) => {
             members.push({
                 type: member.type,
-                member: member.member.serialise(`${path}-members-${index}`)
+                member: member.member.serialise(`${path}-members-${index}-member`)
             });
         })
         return { members, path }

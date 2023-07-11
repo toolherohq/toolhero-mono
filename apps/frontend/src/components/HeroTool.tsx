@@ -1,5 +1,3 @@
-
-import axios from "axios";
 import HeroText from "./HeroText";
 import { useContext } from "react";
 import { HeroToolContext, IHeroToolContext } from "../context/HeroToolContext";
@@ -7,7 +5,7 @@ import RunTool from "./RunTool";
 import HeroOutput from "./HeroOutput";
 
 const HeroTool = () => {
-    const { dispatch, state } = useContext<IHeroToolContext>(HeroToolContext);
+    const { state } = useContext<IHeroToolContext>(HeroToolContext);
     return (
         <>
             <div className="py-4 px-4 bg-gray-300 mb-4">

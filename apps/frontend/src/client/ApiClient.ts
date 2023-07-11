@@ -38,7 +38,7 @@ export class ApiClient implements IApiClient {
 
     async onButtonClick(tool: IHeroToolSerialised, button: IHeroButtonSerialised): Promise<Result<HeroFunctionOutputSerialised>> {
         try {
-            const url = this.buildUrl(`/api/v1/tool/${tool.name}/onClick/button/`);
+            const url = this.buildUrl(`/api/v1/tool/${tool.name}/button/onClick`);
             const response = await axios.post<{ output: HeroFunctionOutputSerialised }>(url, { tool, button });
             const { output } = response.data;
             return Result.ok(output)

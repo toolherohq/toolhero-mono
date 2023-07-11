@@ -3,8 +3,6 @@ import { HeroButton, IHeroButtonSerialised } from "./HeroButton";
 import { HeroExecutionContext } from "./HeroExecutionContext";
 
 
-
-
 export type HeroFunctionOutput = HeroButton | void
 export type HeroFunctionOutputSerialised = {
     type: string;
@@ -64,6 +62,16 @@ export class HeroFunctions extends ValueObject<IHeroFunctionsProps> {
                 func
             })
         }
+    }
+
+    public find(name: string | null | undefined): HeroFunction | null | undefined {
+        if (!name) {
+            return null
+        }
+        const func = this.props.members.find((member) => {
+            return member.name == name
+        })
+        return func?.func
     }
 
 

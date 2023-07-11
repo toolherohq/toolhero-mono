@@ -29,7 +29,7 @@ export class HeroTool extends ValueObject<IHeroToolProps> {
         return new HeroTool({
             name,
             input: HeroInput.New(),
-            onSubmit: async (payload: HeroInput) => {
+            onSubmit: async (_payload: HeroInput) => {
                 return HeroOutput.New()
             },
             functions: HeroFunctions.New()

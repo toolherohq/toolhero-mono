@@ -45,7 +45,7 @@ export class HeroTableRow extends ValueObject<IHeroTableRowProps> {
         }
         return serialised;
     }
-    public static deserialise(serialised: IHeroTableRowSerialised): HeroTableRow {
+    public static deserialise(_serialised: IHeroTableRowSerialised): HeroTableRow {
         return new HeroTableRow({
             items: [],
         })
