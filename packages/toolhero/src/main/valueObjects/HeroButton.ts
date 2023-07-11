@@ -27,7 +27,7 @@ export interface IHeroButtonSerialised {
 export class HeroButton extends ValueObject<IHeroButtonProps> {
     public serialise(path: string): IHeroButtonSerialised {
         return {
-            path: `${path}-button`,
+            path,
             type: this.props.type,
             name: this.props.name,
             meta: this.props.meta,
@@ -53,6 +53,10 @@ export class HeroButton extends ValueObject<IHeroButtonProps> {
 
     public onClick(onHeroButtonClick: string): HeroButton {
         this.props.onClick = onHeroButtonClick;
+        return this;
+    }
+    public addMetaData(key: string, value: string): HeroButton {
+        this.props.meta[key] = value;
         return this;
     }
 }

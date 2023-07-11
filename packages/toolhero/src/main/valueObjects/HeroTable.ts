@@ -15,12 +15,11 @@ export interface IHeroTableSerialised {
 
 
 export class HeroTable extends ValueObject<IHeroTableProps> {
-    public serialise(parentPath: string): IHeroTableSerialised {
-        const path = `${parentPath}-HeroTable`;
+    public serialise(path: string): IHeroTableSerialised {
         return {
             path,
-            header: this.props.header.serialise(),
-            rows: this.props.rows.map((r, index) => r.serialise(`${path}-index-${index}`))
+            header: this.props.header.serialise(`${path}-header`),
+            rows: this.props.rows.map((r, index) => r.serialise(`${path}-rows`))
         }
     }
     public static deserialise(serialised: IHeroTableSerialised): HeroTable {

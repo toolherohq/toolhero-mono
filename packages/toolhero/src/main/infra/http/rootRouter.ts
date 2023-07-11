@@ -1,3 +1,4 @@
+import { AppendPath } from "../../../shared/domain/json/AppendPath";
 import { IRouter } from "../../../toolhero/routes/IRouter";
 import { Router } from "../../../toolhero/routes/Router";
 import { ToolRenderService } from "../../services/ToolRenderService";
@@ -24,7 +25,21 @@ rootRouter.POST("/api/v1/tool/:tool/run", async (req, res, { manager }) => {
   const heroInput = HeroInput.deserialise(req.body.tool.input);
   const response = await tool.onSubmit(heroInput, {});
   const json = {
-    output: response.serialise()
+    output: response.serialise("output")
+  }
+  console.log(json);
+  res.json(json)
+});
+
+rootRouter.POST("/api/v1/tool/:tool/run", async (req, res, { manager }) => {
+  // build request and response objects for routing
+  // const req = new HeroRequest(nextRequest);
+
+  const tool = manager.getTools()[0];
+  const heroInput = HeroInput.deserialise(req.body.tool.input);
+  const response = await tool.onSubmit(heroInput, {});
+  const json = {
+    output: response.serialise("output")
   }
   console.log(json);
   res.json(json)

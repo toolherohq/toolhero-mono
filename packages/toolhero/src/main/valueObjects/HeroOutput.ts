@@ -12,6 +12,7 @@ export interface IHeroOutputProps {
 }
 
 export interface IHeroOutputSerialized {
+    path: string;
     members: {
         type: string;
         member: HeroOutputMemberSerialised
@@ -21,19 +22,20 @@ export interface IHeroOutputSerialized {
 
 
 export class HeroOutput extends ValueObject<IHeroOutputProps> {
-    public serialise(): IHeroOutputSerialized {
+    public serialise(path: string): IHeroOutputSerialized {
         const members: {
             type: string;
             member: HeroOutputMemberSerialised
         }[] = [];
-        for (const member of this.props.members) {
+        this.props.members.map((member, index) => {
             members.push({
                 type: member.type,
-                member: member.member.serialise("tmp")
+                member: member.member.serialise(`${path}-members-${index}`)
             });
-        }
-        return { members }
+        })
+        return { members, path }
     }
+
     public static New(): HeroOutput {
         return new HeroOutput({
             members: [],

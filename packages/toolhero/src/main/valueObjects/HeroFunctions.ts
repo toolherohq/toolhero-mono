@@ -1,11 +1,15 @@
 import { ValueObject } from "../../shared/domain/ValueObject";
-import { HeroButton } from "./HeroButton";
+import { HeroButton, IHeroButtonSerialised } from "./HeroButton";
 import { HeroExecutionContext } from "./HeroExecutionContext";
 
 
 
 
 export type HeroFunctionOutput = HeroButton | void
+export type HeroFunctionOutputSerialised = {
+    type: string;
+    button?: IHeroButtonSerialised;
+}
 
 export type HeroFunction = (context: HeroExecutionContext) => Promise<HeroFunctionOutput>;
 
@@ -26,20 +30,18 @@ export interface IHeroFunctionsSerialized {
 
 
 export class HeroFunctions extends ValueObject<IHeroFunctionsProps> {
-    public async serialise(parentPath: string): Promise<IHeroFunctionsSerialized> {
-        const path = `${parentPath}-HeroFunctions`;
+    public async serialise(): Promise<IHeroFunctionsSerialized> {
         const members: {
             name: string
         }[] = [];
         let index = 0;
         for (const member of this.props.members) {
-            const indexPath = `${path}-index-${index}`
             members.push({
                 name: member.name,
             });
             index += 1;
         }
-        return { path, members }
+        return { path: "", members }
     }
 
 

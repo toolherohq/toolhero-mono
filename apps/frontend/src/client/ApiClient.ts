@@ -1,4 +1,6 @@
 import axios from "axios";
+import { IHeroButtonSerialised } from "toolhero/src/main/valueObjects/HeroButton";
+import { HeroFunctionOutputSerialised } from "toolhero/src/main/valueObjects/HeroFunctions";
 import { IHeroOutputSerialized } from "toolhero/src/main/valueObjects/HeroOutput";
 import { IHeroToolSerialised } from "toolhero/src/main/valueObjects/HeroTool";
 import { Result } from "toolhero/src/shared/core/Result";
@@ -23,9 +25,21 @@ export class ApiClient implements IApiClient {
     async runTool(tool: IHeroToolSerialised): Promise<Result<IHeroOutputSerialized>> {
         try {
             const url = this.buildUrl(`/api/v1/tool/${tool.name}/run`);
-            console.log(url)
-            debugger;
             const response = await axios.post<{ output: IHeroOutputSerialized }>(url, { tool });
+            const { output } = response.data;
+            return Result.ok(output)
+        } catch (err) {
+            return Result.fail({
+                code: "TOOL_EXECUTION_ERROR",
+                message: (err as Error)?.message
+            })
+        }
+    }
+
+    async onButtonClick(tool: IHeroToolSerialised, button: IHeroButtonSerialised): Promise<Result<HeroFunctionOutputSerialised>> {
+        try {
+            const url = this.buildUrl(`/api/v1/tool/${tool.name}/onClick/button/`);
+            const response = await axios.post<{ output: HeroFunctionOutputSerialised }>(url, { tool, button });
             const { output } = response.data;
             return Result.ok(output)
         } catch (err) {

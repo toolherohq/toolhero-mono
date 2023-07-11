@@ -19,7 +19,7 @@ export abstract class ValueObject<T extends ValueObjectProps> {
     this.props = baseProps;
   }
 
-  public abstract serialise(parentPath: string): any;
+  public abstract serialise(path: string): any;
   public type(): string {
     return this.constructor.name
   }

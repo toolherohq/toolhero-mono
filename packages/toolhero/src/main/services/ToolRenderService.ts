@@ -7,7 +7,7 @@ export class ToolRenderService {
         this.tool = tool;
     }
     public async render(): Promise<string> {
-        const toolSerialized = await this.tool.serialise("root");
+        const toolSerialized = await this.tool.serialise();
         const html = `
             <!DOCTYPE html>
             <html lang="en">

@@ -18,12 +18,11 @@ export interface IHeroToolSerialised {
 }
 
 export class HeroTool extends ValueObject<IHeroToolProps> {
-    public async serialise(parentPath: string): Promise<IHeroToolSerialised> {
-        const path = `${parentPath}-HeroTool`;
+    public async serialise(): Promise<IHeroToolSerialised> {
         return {
-            path,
+            path: "",
             name: this.props.name,
-            input: await this.props.input.serialise(path)
+            input: await this.props.input.serialise()
         }
     }
     public static New(name: string): HeroTool {

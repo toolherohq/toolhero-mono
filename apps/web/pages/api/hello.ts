@@ -12,6 +12,7 @@ tool.input.add(HeroText.New("page").default(async () => { return "9" }))
 tool.input.add(HeroText.New("limit"))
 tool.functions.register("onApprove", async (context) => {
     console.log({ context })
+    return HeroButton.New("Success");
 })
 tool.run(async (payload, context) => {
     console.log(payload.valueOf("page"))
@@ -21,7 +22,7 @@ tool.run(async (payload, context) => {
     table.header.push("Action");
     const row = HeroTableRow.New();
     row.add("This is a title")
-    row.add(HeroButton.New("Hello world!").onClick("onApprove"))
+    row.add(HeroButton.New("Hello world!").onClick("onApprove").addMetaData("hello", "world"));
     table.rows.push(row)
     output.add(table);
 

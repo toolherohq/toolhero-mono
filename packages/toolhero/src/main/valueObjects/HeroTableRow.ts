@@ -23,23 +23,21 @@ export interface IHeroTableRowSerialised {
 
 
 export class HeroTableRow extends ValueObject<IHeroTableRowProps> {
-    public serialise(parentPath: string): IHeroTableRowSerialised {
-        const path = `${parentPath}-HeroTableRow`;
+    public serialise(path: string): IHeroTableRowSerialised {
         const serialised: IHeroTableRowSerialised = {
-            path,
+            path: "",
             items: []
         }
         let index = 0;
         for (const item of this.props.items) {
-            const indexPath = `${path}-index-${index}`;
             let value: string | number | IHeroButtonSerialised | null = null;
             if (item.type === "HeroButton") {
-                value = (item.value as HeroButton).serialise(indexPath)
+                value = (item.value as HeroButton).serialise(`${path}-items-${index}`)
             } else {
                 value = item.value?.toString() as string
             }
             serialised.items.push({
-                path: indexPath,
+                path: `${path}-item-${index}`,
                 type: item.type,
                 value
             });

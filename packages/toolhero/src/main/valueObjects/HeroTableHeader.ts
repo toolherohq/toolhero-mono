@@ -6,13 +6,17 @@ export interface IHeroTableHeaderProps {
 }
 
 export interface IHeroTableHeaderSerialised {
+    path: string;
     items: IHeroTableHeaderItem[];
 }
 
 
 export class HeroTableHeader extends ValueObject<IHeroTableHeaderProps> {
-    public serialise(): IHeroTableHeaderSerialised {
-        return this.props
+    public serialise(path: string): IHeroTableHeaderSerialised {
+        return {
+            ...this.props,
+            path
+        }
     }
     public static deserialise(serialised: IHeroTableHeaderSerialised): HeroTableHeader {
         return new HeroTableHeader({
